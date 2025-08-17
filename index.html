@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เว็บสุ่มตัวละคร</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #f1f1f1;
+      text-align: center;
+    }
+    header {
+      padding: 30px 20px;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+      color: #ffd700;
+      letter-spacing: 2px;
+    }
+    button {
+      margin: 30px 0;
+      padding: 12px 25px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    }
+    .character {
+      max-width: 600px;
+      margin: 0 auto 50px auto;
+      padding: 25px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      text-align: left;
+      animation: fadeIn 0.5s ease;
+    }
+    .character h2 {
+      color: #00e5ff;
+      margin-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 10px;
+    }
+    .character p {
+      margin: 8px 0;
+      font-size: 16px;
+      line-height: 1.4em;
+    }
+    .character strong {
+      color: #ffd700;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎲 เว็บสุ่มตัวละครแฟนตาซี</h1>
+  </header>
+
+  <button onclick="generateCharacter()">สุ่มตัวละคร</button>
+
+  <div class="character" id="characterDisplay">
+    <h2>ผลลัพธ์จะปรากฏที่นี่</h2>
+  </div>
+
+  <script>
+    const characterData = {
+      "names": ["ไลออนฮาร์ท","เซเรน่า","คาเอล","มิรา","เอรอส","ลูซิอัส","นีออน","ไอริส","ราแวน","ไคลน์"],
+      "races": ["มนุษย์","เอลฟ์","ดาร์กเอลฟ์","คนสัตว์","ปีศาจ","หุ่นยนต์","เอเลี่ยน"],
+      "classes": ["นักดาบ","นักเวท","นักฆ่า","นักธนู","นักบวช","นักประดิษฐ์","นักผจญภัย"],
+      "eyeColors": ["น้ำตาล","ดำ","น้ำเงิน","เขียว","แดง","ม่วง","ทอง","เงิน","สองสี","เรืองแสง"],
+      "outfits": ["แฟนตาซีคลาสสิก","ไซไฟ","สตรีทโมเดิร์น","ชุดโบราณ","เซอร์เรียล/แฟชั่นจัดจ้าน"],
+      "weapons": ["ดาบ","ขวาน","หอก","ธนู","หน้าไม้","ปืน","ไม้กายสิทธิ์","คทา","ตำราเวท","กำปั้น/สนับมือ","อาวุธเฉพาะ"],
+      "abilities": ["ไฟ","น้ำ","ลม","ดิน","สายฟ้า","น้ำแข็ง","ความมืด","แสงสว่าง","เทเลพาธี","ควบคุมความฝัน","เวลา","มิติ","ร่างกายเหนือมนุษย์"],
+      "personalities": ["ขี้เล่น","เงียบ","ดุดัน","มีเสน่ห์ลึกลับ","ขี้โมโห","ใจดี","ซับซ้อน"],
+      "specialFeatures": ["แผลเป็น","รอยสัก","ปีก","หาง","เครื่องราง","สัตว์เลี้ยงคู่หู","อุปกรณ์เทคโนโลยี"],
+      "colorThemes": ["โทนเข้ม","โทนสด","โทนพาสเทล","โมโนโครม"],
+      "favoriteFoods": ["ขนมปังอบร้อน","ซุปสมุนไพร","เนื้อย่าง","ปลาย่าง","ผลไม้หายาก","ขนมหวาน","กาแฟเข้ม","ไวน์โบราณ"],
+      "hobbies": ["อ่านหนังสือเวท","ล่าสมบัติ","ต่อสู้","วาดภาพ","สร้างอาวุธ","ท่องเที่ยว","เล่นดนตรี","สะสมของโบราณ"],
+      "strengths": ["กล้าหาญ","ฉลาดหลักแหลม","มีเสน่ห์","เร็ว","แข็งแรง","มีไหวพริบ","ใจดี"],
+      "weaknesses": ["ขี้สงสาร","โลภ","ใจร้อน","ระแวง","ดื้อ","หลงตัวเอง","เชื่อคนง่าย"],
+      "motivations": ["ปกป้องเพื่อน","แก้แค้น","แสวงหาความรู้","พิสูจน์ตัวเอง","ตามหาความรัก","ล้างคำสาป","ทำลายศัตรูโบราณ"]
+    };
+
+    function randomChoice(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function generateCharacter() {
+      const character = {
+        name: randomChoice(characterData.names),
+        race: randomChoice(characterData.races),
+        class: randomChoice(characterData.classes),
+        eyeColor: randomChoice(characterData.eyeColors),
+        outfit: randomChoice(characterData.outfits),
+        weapon: randomChoice(characterData.weapons),
+        ability: randomChoice(characterData.abilities),
+        personality: randomChoice(characterData.personalities),
+        specialFeature: randomChoice(characterData.specialFeatures),
+        colorTheme: randomChoice(characterData.colorThemes),
+        food: randomChoice(characterData.favoriteFoods),
+        hobby: randomChoice(characterData.hobbies),
+        strength: randomChoice(characterData.strengths),
+        weakness: randomChoice(characterData.weaknesses),
+        motivation: randomChoice(characterData.motivations)
+      };
+
+      const display = `
+        <h2>${character.name}</h2>
+        <p><strong>เผ่า:</strong> ${character.race}</p>
+        <p><strong>อาชีพ:</strong> ${character.class}</p>
+        <p><strong>สีตา:</strong> ${character.eyeColor}</p>
+        <p><strong>ชุด:</strong> ${character.outfit}</p>
+        <p><strong>อาวุธ:</strong> ${character.weapon}</p>
+        <p><strong>พลัง:</strong> ${character.ability}</p>
+        <p><strong>บุคลิก:</strong> ${character.personality}</p>
+        <p><strong>ความพิเศษ:</strong> ${character.specialFeature}</p>
+        <p><strong>ธีมสี:</strong> ${character.colorTheme}</p>
+        <hr>
+        <p><strong>ของชอบกิน:</strong> ${character.food}</p>
+        <p><strong>งานอดิเรก:</strong> ${character.hobby}</p>
+        <p><strong>จุดเด่น:</strong> ${character.strength}</p>
+        <p><strong>จุดอ่อน:</strong> ${character.weakness}</p>
+        <p><strong>แรงบันดาลใจ:</strong> ${character.motivation}</p>
+      `;
+
+      document.getElementById('characterDisplay').innerHTML = display;
+    }
+  </script>
+</body>
+</html>
