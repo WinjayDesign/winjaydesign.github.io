@@ -1,174 +1,248 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Character Randomizer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>เว็บสุ่มตัวละครแฟนตาซี</title>
   <style>
+    :root {
+      --light: #E9E3DF;
+      --accent: #FF7A30;
+      --accent-hover: #ff9559;
+      --blue: #465C88;
+      --black: #000000;
+    }
+
     body {
       margin: 0;
-      font-family: "Segoe UI", Tahoma, sans-serif;
-      background: #000;
-      color: #f5c400;
-      text-align: center;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--light);
+      color: var(--black);
     }
 
     header {
+      background: var(--blue);
       padding: 20px;
-      background: #111;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.8);
+      border-bottom: 4px solid var(--accent);
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 15px;
+      text-align: center;
     }
 
     header img {
-      height: 60px;
+      height: 70px;
+      margin-bottom: 10px;
     }
 
     header h1 {
-      font-size: 2em;
       margin: 0;
-      color: #f5c400;
-      letter-spacing: 2px;
+      font-size: 28px;
+      color: var(--light);
     }
 
-    .intro {
-      max-width: 700px;
-      margin: 30px auto;
-      padding: 20px;
-      background: #111;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.8);
-      font-size: 1.1em;
-      line-height: 1.6;
-    }
-
-    button {
-      margin: 25px 0;
-      padding: 12px 25px;
-      font-size: 18px;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #f5c400;
-      color: #000;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    button:hover {
-      transform: scale(1.08);
-      box-shadow: 0 4px 15px rgba(245,196,0,0.6);
-    }
-
-    .character {
-      max-width: 550px;
-      margin: 0 auto 40px auto;
-      padding: 25px;
-      background: #111;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.8);
-      text-align: left;
-    }
-
-    .character h2 {
-      color: #f5c400;
-      margin-bottom: 15px;
-      border-bottom: 1px solid rgba(245,196,0,0.4);
-      padding-bottom: 8px;
-    }
-
-    .character p {
-      margin: 8px 0;
-      font-size: 16px;
-      line-height: 1.4em;
-    }
-
-    .character strong {
-      color: #fff;
-    }
-
-    /* Social icons */
-    .socials {
-      margin: 40px 0;
+    .layout {
       display: flex;
       justify-content: center;
       gap: 20px;
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
     }
 
-    .socials a {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: #f5c400;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #000;
+    .sidebar {
+      width: 200px;
+      background: var(--blue);
+      border-radius: 12px;
+      padding: 10px;
+      color: var(--light);
+      text-align: center;
+    }
+
+    .sidebar h3 {
+      font-size: 16px;
+      margin: 10px 0;
+      color: var(--accent);
+    }
+
+    .sidebar img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .container {
+      flex: 1;
+      max-width: 800px;
+    }
+
+    .description, .character, .prompt-box {
+      background: #fff;
+      border: 2px solid var(--blue);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .description h2, .character h2, .prompt-box h3 {
+      color: var(--blue);
+      margin-top: 0;
+    }
+
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 8px;
       font-weight: bold;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: 0.3s;
+      margin: 10px 0;
     }
 
-    .socials a:hover {
-      transform: scale(1.15);
-      box-shadow: 0 4px 12px rgba(245,196,0,0.7);
+    button:hover {
+      background: var(--accent-hover);
     }
 
-    .socials a span {
+    textarea {
+      width: 100%;
+      background: var(--light);
+      color: var(--black);
+      border: 1px solid var(--blue);
+      padding: 10px;
+      border-radius: 8px;
       font-size: 14px;
+      resize: none;
+    }
+
+    .socials, .ai-tools {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .socials a, .ai-tools a {
+      text-decoration: none;
+      background: var(--blue);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .socials a:hover, .ai-tools a:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .footer-banner {
+      background: var(--blue);
+      border-top: 3px solid var(--accent);
+      margin-top: 30px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .footer-banner img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .layout {
+        flex-direction: column;
+        align-items: center;
+      }
+      .sidebar {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="โลโก้"> <!-- วางไฟล์โลโก้ชื่อ logo.png ในโฟลเดอร์เดียวกับเว็บ -->
-    <h1>เว็บสุ่มตัวละครแฟนตาซี</h1>
+    <img src="logo.png" alt="Website Logo">
+    <h1>Character Randomizer</h1>
   </header>
 
-  <div class="intro">
-    <p>ยินดีต้อนรับสู่ <strong>เว็บสุ่มตัวละครแฟนตาซี</strong> 🎲</p>
-    <p>กดปุ่ม "สุ่มตัวละคร" เพื่อสร้างแรงบันดาลใจในการออกแบบ!  
-    ระบบจะสุ่ม <strong>เผ่า, อาชีพ, บุคลิก, พลัง, อาวุธ</strong> และรายละเอียดอื่น ๆ  
-    คุณสามารถใช้ผลลัพธ์นี้ไปต่อยอดในงานวาด, 3D, เกม, หรือสร้างคาแรคเตอร์ใหม่ของคุณเองได้</p>
+  <div class="layout">
+    <!-- Sidebar Banner -->
+    <div class="sidebar">
+      <h3>Sponsored</h3>
+      <img src="banner ad 1.png" alt="Banner Ad 1">
+      <img src="banner ad 2.png" alt="Banner Ad 2">
+    </div>
+
+    <div class="container">
+      <div class="description">
+        <h2>How to Use</h2>
+        <p>
+          Click <strong>"Randomize Character"</strong> to generate a fantasy character.  
+          It creates race, class, eye color, outfit, weapon, power, personality, hobby, and more.  
+          Below, you will also get an <strong>English prompt</strong> ready for AI image generators.
+        </p>
+      </div>
+
+      <button onclick="generateCharacter()">🎲 Randomize Character</button>
+
+      <div class="character" id="characterDisplay">
+        <h2>Character details will appear here</h2>
+      </div>
+
+      <div class="prompt-box">
+        <h3>🎨 AI Image Prompt</h3>
+        <textarea id="promptOutput" rows="6" readonly></textarea>
+      </div>
+
+      <!-- AI Tool Buttons -->
+      <div class="ai-tools">
+        <a href="https://dreamina.capcut.com/ai-tool/home" target="_blank">✨ Dreamina (CapCut)</a>
+        <a href="https://www.bing.com/images/create" target="_blank">🎨 Bing Image Creator</a>
+      </div>
+
+      <!-- Social Links -->
+      <div class="socials">
+        <a href="https://www.facebook.com/winjayedesign" target="_blank">Facebook</a>
+        <a href="https://www.instagram.com/winjaydesign/" target="_blank">Instagram</a>
+        <a href="https://www.youtube.com/@Winjaye" target="_blank">YouTube</a>
+      </div>
+    </div>
   </div>
 
-  <button onclick="generateCharacter()">สุ่มตัวละคร</button>
-
-  <div class="character" id="characterDisplay">
-    <h2>ผลลัพธ์จะปรากฏที่นี่</h2>
-  </div>
-
-  <div class="socials">
-    <a href="https://www.facebook.com/winjayedesign" target="_blank"><span>f</span></a>
-    <a href="https://www.instagram.com/winjaydesign/" target="_blank"><span>IG</span></a>
-    <a href="https://www.youtube.com/@Winjaye" target="_blank"><span>▶</span></a>
+  <!-- Footer Banner -->
+  <div class="footer-banner">
+    <img src="banner bottom ad.png" alt="Bottom Banner Ad">
   </div>
 
   <script>
     const characterData = {
-      "races": ["มนุษย์","เอลฟ์","ดาร์กเอลฟ์","คนสัตว์","ปีศาจ","หุ่นยนต์","เอเลี่ยน"],
-      "classes": ["นักดาบ","นักเวท","นักฆ่า","นักธนู","นักบวช","นักประดิษฐ์","นักผจญภัย"],
-      "eyeColors": ["น้ำตาล","ดำ","น้ำเงิน","เขียว","แดง","ม่วง","ทอง","เงิน","สองสี","เรืองแสง"],
-      "outfits": ["แฟนตาซีคลาสสิก","ไซไฟ","สตรีทโมเดิร์น","ชุดโบราณ","เซอร์เรียล/แฟชั่นจัดจ้าน"],
-      "weapons": ["ดาบ","ขวาน","หอก","ธนู","หน้าไม้","ปืน","ไม้กายสิทธิ์","คทา","ตำราเวท","กำปั้น/สนับมือ","อาวุธเฉพาะ"],
-      "abilities": ["ไฟ","น้ำ","ลม","ดิน","สายฟ้า","น้ำแข็ง","ความมืด","แสงสว่าง","เทเลพาธี","ควบคุมความฝัน","เวลา","มิติ","ร่างกายเหนือมนุษย์"],
-      "personalities": ["ขี้เล่น","เงียบ","ดุดัน","มีเสน่ห์ลึกลับ","ขี้โมโห","ใจดี","ซับซ้อน"],
-      "specialFeatures": ["แผลเป็น","รอยสัก","ปีก","หาง","เครื่องราง","สัตว์เลี้ยงคู่หู","อุปกรณ์เทคโนโลยี"],
-      "colorThemes": ["โทนเข้ม","โทนสด","โทนพาสเทล","โมโนโครม"],
-      "names": ["ไคโรส","อาเรีย","เซราฟีน","ไดออน","ลูเมียร์","ซอร์เรน","วัลคีร์","ไอเรน","มอร์ริแกน","เอรอส"],
-      "hobbies": ["ฝึกดาบ","อ่านหนังสือ","ตะลุยดันเจี้ยน","สะสมอาวุธ","นั่งสมาธิ","ฟังเพลงโบราณ","ทำอาหาร"],
-      "foods": ["สเต็ก","ราเมง","น้ำผึ้ง","ขนมปัง","ไวน์แดง","ผลไม้เวทมนตร์","เค้กช็อกโกแลต"]
+      races: ["Human","Elf","Dark Elf","Beastfolk","Demon","Android","Alien"],
+      classes: ["Warrior","Mage","Assassin","Archer","Cleric","Inventor","Adventurer"],
+      eyeColors: ["Brown","Black","Blue","Green","Red","Purple","Gold","Silver","Heterochromia","Glowing"],
+      outfits: ["Classic fantasy","Sci-fi armor","Modern streetwear","Ancient robes","Avant-garde fashion"],
+      weapons: ["Sword","Axe","Spear","Bow","Gun","Magic staff","Wand","Grimoire","Gauntlets","Unique weapon"],
+      abilities: ["Fire","Water","Wind","Earth","Lightning","Ice","Darkness","Light","Time","Dimension"],
+      personalities: ["Playful","Silent","Aggressive","Mysterious","Kind","Complex"],
+      specialFeatures: ["Scar","Tattoo","Wings","Tail","Amulet","Companion animal","Cybernetic gear"],
+      colorThemes: ["Dark tones","Vivid tones","Pastel tones","Monochrome"],
+      hobbies: ["Reading","Training","Cooking","Collecting weapons","Playing music","Drawing"],
+      foods: ["Bread","Steak","Ramen","Fruits","Sushi","Desserts","Coffee"],
+      names: ["Aria","Kael","Lunaris","Raven","Sylas","Nyra","Orion","Selene","Darius","Lyra"]
     };
 
-    function randomChoice(array) {
-      return array[Math.floor(Math.random() * array.length)];
+    function randomChoice(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
     }
 
     function generateCharacter() {
-      const character = {
+      const c = {
         name: randomChoice(characterData.names),
         race: randomChoice(characterData.races),
         class: randomChoice(characterData.classes),
@@ -184,22 +258,30 @@
       };
 
       const display = `
-        <h2>ผลลัพธ์ตัวละคร</h2>
-        <p><strong>ชื่อ:</strong> ${character.name}</p>
-        <p><strong>เผ่า:</strong> ${character.race}</p>
-        <p><strong>อาชีพ:</strong> ${character.class}</p>
-        <p><strong>สีตา:</strong> ${character.eyeColor}</p>
-        <p><strong>ชุด:</strong> ${character.outfit}</p>
-        <p><strong>อาวุธ:</strong> ${character.weapon}</p>
-        <p><strong>พลัง:</strong> ${character.ability}</p>
-        <p><strong>บุคลิก:</strong> ${character.personality}</p>
-        <p><strong>ความพิเศษ:</strong> ${character.specialFeature}</p>
-        <p><strong>ธีมสี:</strong> ${character.colorTheme}</p>
-        <p><strong>งานอดิเรก:</strong> ${character.hobby}</p>
-        <p><strong>อาหารที่ชอบ:</strong> ${character.food}</p>
+        <h2>Generated Character</h2>
+        <p><strong>Name:</strong> ${c.name}</p>
+        <p><strong>Race:</strong> ${c.race}</p>
+        <p><strong>Class:</strong> ${c.class}</p>
+        <p><strong>Eye Color:</strong> ${c.eyeColor}</p>
+        <p><strong>Outfit:</strong> ${c.outfit}</p>
+        <p><strong>Weapon:</strong> ${c.weapon}</p>
+        <p><strong>Power:</strong> ${c.ability}</p>
+        <p><strong>Personality:</strong> ${c.personality}</p>
+        <p><strong>Special Feature:</strong> ${c.specialFeature}</p>
+        <p><strong>Color Theme:</strong> ${c.colorTheme}</p>
+        <p><strong>Hobby:</strong> ${c.hobby}</p>
+        <p><strong>Favorite Food:</strong> ${c.food}</p>
       `;
+      document.getElementById("characterDisplay").innerHTML = display;
 
-      document.getElementById('characterDisplay').innerHTML = display;
+      const prompt = `Fantasy character design of a ${c.race} ${c.class}, named ${c.name}, 
+      with ${c.eyeColor} eyes, wearing ${c.outfit}, wielding a ${c.weapon}, 
+      power of ${c.ability}, personality is ${c.personality}, 
+      special feature: ${c.specialFeature}, color theme: ${c.colorTheme}. 
+      Loves ${c.food}, hobby is ${c.hobby}. 
+      Highly detailed concept art, dramatic lighting, fantasy illustration.`;
+
+      document.getElementById("promptOutput").value = prompt;
     }
   </script>
 </body>
